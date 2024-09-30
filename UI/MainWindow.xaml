@@ -78,10 +78,11 @@
                     </Grid>
                 </Border>
 
-                <Grid Grid.Row="1">
-                    <!--Conversation-->
-                    <uc:FriendTag Width="200" Height="50" VerticalAlignment="Top"/>
-                </Grid>
+                <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="1">
+                    <StackPanel x:Name="friendTags" Orientation="Vertical">
+                        
+                    </StackPanel>
+                </ScrollViewer>
             </Grid>
         </Border>
 

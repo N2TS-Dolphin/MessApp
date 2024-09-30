@@ -9,7 +9,7 @@ using MongoDB.Driver;
 
 namespace MessApp.DB.Dao
 {
-    internal class RelationshipDao
+    public class RelationshipDao
     {
         private readonly IMongoCollection<RelationshipModel> _relationshipCollection;
 

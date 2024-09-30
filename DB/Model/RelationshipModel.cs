@@ -10,7 +10,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace MessApp.DB.Model
 {
-    class RelationshipModel : INotifyPropertyChanged
+    public class RelationshipModel : INotifyPropertyChanged
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]

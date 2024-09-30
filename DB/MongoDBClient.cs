@@ -9,7 +9,7 @@ using MongoDB.Driver;
 
 namespace MessApp.DB
 {
-    class MongoDBClient
+    public class MongoDBClient
     {
         private readonly IMongoDatabase _database;
 

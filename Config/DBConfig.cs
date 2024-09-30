@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MessApp.Config
 {
-    class DBConfig
+    public class DBConfig
     {
         public string connectionString {  get; set; }
         public string databaseName { get; set; }
