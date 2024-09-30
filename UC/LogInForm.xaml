@@ -1,0 +1,103 @@
+﻿<UserControl x:Class="MessApp.UC.LogInForm"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MessApp.UC"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="250" d:DesignWidth="300">
+    <Grid>
+        <StackPanel>
+            <!--Enter Username-->
+            <Border BorderThickness="1px" BorderBrush="Black" CornerRadius="10" Margin="0,0,0,15">
+                <Grid Height="30" Margin="10,0,10,0">
+                    <Image Source="../Resources/Images/user.png" Width="24px" Height="24px" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <Grid Width="250" Height="24px" VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <TextBlock x:Name="usernameHint" Text="Enter username" Foreground="Gray" FontSize="16"/>
+                        <TextBox x:Name="username" BorderThickness="0" Background="Transparent" FontSize="16px" TextChanged="username_TextChanged"/>
+                    </Grid>
+                </Grid>
+            </Border>
+            
+            <!--Enter Password-->
+            <Border BorderThickness="1px" BorderBrush="Black" CornerRadius="10" Margin="0,0,0,15">
+                <Grid Height="30" Margin="10,0,10,0">
+                    <Image Source="../Resources/Images/key.png" Width="24px" Height="24px" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                    <Grid Width="250" Height="24px" VerticalAlignment="Center" HorizontalAlignment="Right">
+                        <TextBlock x:Name="passwordHint" Text="Enter password" Foreground="Gray" FontSize="16"/>
+                        <PasswordBox x:Name="password" BorderThickness="0" Background="Transparent" FontSize="16px" PasswordChanged="password_PasswordChanged"/>
+                    </Grid>
+                </Grid>
+            </Border>
+
+            <!--Login Button-->
+            <Button x:Name="btn_Login" Content="Login" Height="30" FontSize="16px" Click="btn_Login_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="#4565f2" />
+                        <Setter Property="Foreground" Value="White" />
+                        <Setter Property="FontFamily" Value="{StaticResource Caligna}"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                                        <!-- Đặt CornerRadius ở đây -->
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+            
+            <!--Forget Password-->
+            <Button Content="Forgot Password" Height="30" FontSize="16px" Margin="0,0,0,15" Click="btn_ForgotPasswordSwitch_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="Foreground" Value="Gray" />
+                        <Setter Property="FontFamily" Value="{StaticResource Caligna}"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                                        <!-- Đặt CornerRadius ở đây -->
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="Black"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+            </Button>
+            
+            <!--Create New Account-->
+            <Button Content="Create New Account" Height="30" FontSize="16px" Click="btn_SignUpSwitch_Click">
+                <Button.Style>
+                    <Style TargetType="Button">
+                        <Setter Property="Background" Value="Gray"/>
+                        <Setter Property="Foreground" Value="White"/>
+                        <Setter Property="FontFamily" Value="{StaticResource Caligna}"/>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="Button">
+                                    <Border Background="{TemplateBinding Background}" CornerRadius="10">
+                                        <!-- Đặt CornerRadius ở đây -->
+                                        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </Button.Style>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

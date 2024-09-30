@@ -1,0 +1,50 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Resources\Fonts\CalignaRegular.otf" />
+    <None Remove="Resources\Images\add-friend.png" />
+    <None Remove="Resources\Images\cake.png" />
+    <None Remove="Resources\Images\call.png" />
+    <None Remove="Resources\Images\conversation.png" />
+    <None Remove="Resources\Images\create.png" />
+    <None Remove="Resources\Images\group.png" />
+    <None Remove="Resources\Images\key.png" />
+    <None Remove="Resources\Images\logo.png" />
+    <None Remove="Resources\Images\logo3D.png" />
+    <None Remove="Resources\Images\search.png" />
+    <None Remove="Resources\Images\send.png" />
+    <None Remove="Resources\Images\user.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MongoDB.Bson" Version="2.29.0" />
+    <PackageReference Include="MongoDB.Driver" Version="2.29.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Fonts\CalignaRegular.otf">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\Images\add-friend.png" />
+    <Resource Include="Resources\Images\cake.png" />
+    <Resource Include="Resources\Images\call.png" />
+    <Resource Include="Resources\Images\conversation.png" />
+    <Resource Include="Resources\Images\create.png" />
+    <Resource Include="Resources\Images\group.png" />
+    <Resource Include="Resources\Images\key.png" />
+    <Resource Include="Resources\Images\logo.png" />
+    <Resource Include="Resources\Images\logo3D.png" />
+    <Resource Include="Resources\Images\search.png" />
+    <Resource Include="Resources\Images\send.png" />
+    <Resource Include="Resources\Images\user.png" />
+  </ItemGroup>
+
+</Project>

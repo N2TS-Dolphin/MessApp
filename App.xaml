@@ -1,0 +1,9 @@
+﻿<Application x:Class="MessApp.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:MessApp.UI"
+             StartupUri="./UI/AuthenticationWindow.xaml">
+    <Application.Resources>
+        <FontFamily x:Key="Caligna">pack://application:,,,/MessApp;component/Resources/Fonts/CalignaRegular.otf</FontFamily>
+    </Application.Resources>
+</Application>
