@@ -49,10 +49,7 @@ namespace MessApp.UC
 
         private void btn_Login_Click(object sender, RoutedEventArgs e)
         {
-            if (_authenticatorController.LogIn(username.Text, password.Password))
-                OnLogInSuccess?.Invoke();
-            else
-                MessageBox.Show("Incorrect Username or Password");
+            LogInAction();
         }
 
         private void btn_SignUpSwitch_Click(object sender, RoutedEventArgs e)
@@ -63,6 +60,14 @@ namespace MessApp.UC
         private void btn_ForgotPasswordSwitch_Click(object sender, RoutedEventArgs e)
         {
             OnForgotPasswordSwitch?.Invoke();
+        }
+
+        public void LogInAction()
+        {
+            if (_authenticatorController.LogIn(username.Text, password.Password))
+                OnLogInSuccess?.Invoke();
+            else
+                MessageBox.Show("Incorrect Username or Password");
         }
     }
 }

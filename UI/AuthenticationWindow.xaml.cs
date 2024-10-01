@@ -61,5 +61,20 @@ namespace MessApp.UI
         {
 
         }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                if(logInForm.Visibility == Visibility.Visible )
+                { 
+                    logInForm.LogInAction(); 
+                }
+                else if(signUpForm.Visibility == Visibility.Visible )
+                {
+                    signUpForm.SignUpAction();
+                }
+            }
+        }
     }
 }

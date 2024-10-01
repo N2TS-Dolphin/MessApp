@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:MessApp.UI"
         xmlns:uc="clr-namespace:MessApp.UC"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        KeyDown="Window_KeyDown">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50px"/>
@@ -110,7 +111,7 @@
                     </Grid.RowDefinitions>
                     <!--Chat Box-->
                     <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Hidden" HorizontalScrollBarVisibility="Disabled">
-                        <StackPanel x:Name="messageTags">
+                        <StackPanel x:Name="messageTags" MaxWidth="350" HorizontalAlignment="Left" Margin="5">
                             <!--Display Message-->
                         </StackPanel>
                     </ScrollViewer>

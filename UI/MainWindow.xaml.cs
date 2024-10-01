@@ -14,7 +14,6 @@ using MessApp.DB;
 using MessApp.DB.Dao;
 using MessApp.DB.Model;
 using MessApp.UC;
-using Microsoft.VisualBasic;
 
 namespace MessApp.UI
 {
@@ -88,7 +87,7 @@ namespace MessApp.UI
         }
 
         /// <summary>
-        /// 
+        /// Start Real Time Update Conversation
         /// </summary>
         /// <param name="conversation"></param>
         private void StartRealTimeUpdates(ConversationModel conversation)
@@ -106,6 +105,19 @@ namespace MessApp.UI
 
         private void btn_Send_Clicked(object sender, RoutedEventArgs e)
         {
+            SendAction();
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter && TypingArea.IsFocused)
+            {
+                SendAction();
+            }
+        }
+
+        private void SendAction()
+        {
             string messageContent = TypingArea.Text;
 
             if (!string.IsNullOrEmpty(messageContent))
@@ -122,11 +134,7 @@ namespace MessApp.UI
                 _conversationDao.InsertNewMessage(newMessage);
 
                 TypingArea.Text = string.Empty;
-
-                var messageTag = new MessageTag(newMessage);
-                messageTags.Children.Add(messageTag);
             }
-
         }
     }
 }

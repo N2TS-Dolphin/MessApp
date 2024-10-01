@@ -56,13 +56,18 @@ namespace MessApp.UC
 
         private void btn_Register_Click(object sender, RoutedEventArgs e)
         {
-            _authenticatorController.SignUp(username.Text, password.Password, phone.Text, firstName.Text, lastName.Text, birthDate.SelectedDate ?? DateTime.Today);
+            SignUpAction();
             OnRegisterSuccess?.Invoke();
         }
 
         private void btn_LogInSwitch_Click(object sender, RoutedEventArgs e)
         {
             OnLogInSwitch?.Invoke();
+        }
+
+        public void SignUpAction()
+        {
+            _authenticatorController.SignUp(username.Text, password.Password, phone.Text, firstName.Text, lastName.Text, birthDate.SelectedDate ?? DateTime.Today);
         }
     }
 }

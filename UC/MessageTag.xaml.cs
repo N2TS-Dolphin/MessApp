@@ -32,7 +32,7 @@ namespace MessApp.UC
             InitializeComponent();
             _accountDao = new AccountDao(new MongoDBClient(new DBConfig()));
             Message = message;
-            SenderName.Text = _accountDao.GetAccountByUID(message.sender_id).firstName + " " + _accountDao.GetAccountByUID(message.sender_id).lastName;
+            SenderName.Text = _accountDao.GetAccountByUID(message.sender_id).firstName;
             MessageContent.Text = message.message;
         }
     }

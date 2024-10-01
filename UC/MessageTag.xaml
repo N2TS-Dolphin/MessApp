@@ -7,12 +7,10 @@
              mc:Ignorable="d" 
              d:Height="auto" d:Width="auto"
              d:MaxWidth="350">
-    <Grid>
-        <StackPanel>
-            <TextBlock x:Name="SenderName" Text="Sender" FontSize="12" Margin="0,5,0,5" Foreground="Black"/>
-            <Border BorderThickness="1" Background="#c0c0c0" CornerRadius="8" Height="Auto">
-                <TextBlock x:Name="MessageContent" Height="Auto" FontSize="16" Foreground="White" Text="Hello World!!" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="5"/>
-            </Border>
-        </StackPanel>
-    </Grid>
+    <StackPanel MinWidth="50" MaxWidth="350" HorizontalAlignment="Left">
+        <TextBlock x:Name="SenderName" Text="Sender" FontSize="12" Margin="10,5,0,5" Foreground="Black"/>
+        <Border BorderThickness="1" Background="#c0c0c0" CornerRadius="8" Height="Auto">
+            <TextBlock x:Name="MessageContent" Height="Auto" FontSize="16" Foreground="White" Text="Hello World!!" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,5" TextWrapping="Wrap"/>
+        </Border>
+    </StackPanel>
 </UserControl>
