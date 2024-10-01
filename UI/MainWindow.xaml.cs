@@ -14,6 +14,7 @@ using MessApp.DB;
 using MessApp.DB.Dao;
 using MessApp.DB.Model;
 using MessApp.UC;
+using Microsoft.VisualBasic;
 
 namespace MessApp.UI
 {
@@ -23,6 +24,7 @@ namespace MessApp.UI
     public partial class MainWindow : Window
     {
         private int _currUser;
+        private int _currConversationId;
         private readonly ConversationDao _conversationDao;
         public MainWindow()
         {
@@ -50,9 +52,19 @@ namespace MessApp.UI
             }    
         }
 
-        public void LoadMessages()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="conversation"></param>
+        public void LoadMessages(ConversationModel conversation)
         {
-            
+            List<MessageModel> messages = _conversationDao.GetAllMessagesByCID(conversation.conversation_id);
+
+            foreach (MessageModel message in messages)
+            {
+                var messageTag = new MessageTag(message);
+                messageTags.Children.Add(messageTag);
+            }
         }
 
         /// <summary>
@@ -62,18 +74,58 @@ namespace MessApp.UI
         /// <param name="conversation"></param>
         private void OnFriendTagClicked (object sender, ConversationModel conversation)
         {
-            List<MessageModel> messages = _conversationDao.GetAllMessagesByCID(conversation.conversation_id);
             Username.Text = conversation.name;
             messageTags.Children.Clear();
-            foreach (MessageModel message in messages)
-            {
-                var messageTag = new MessageTag(message);
-                messageTags.Children.Add(messageTag);
-            }
+
+            _currConversationId = conversation.conversation_id;
+            LoadMessages(conversation);
+            StartRealTimeUpdates(conversation);
         }
 
         private void btn_FriendReq_Click(object sender, RoutedEventArgs e)
         {
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="conversation"></param>
+        private void StartRealTimeUpdates(ConversationModel conversation)
+        {
+            _conversationDao.StartMessageStream(conversation.conversation_id, (MessageModel newMessage) =>
+            {
+                // Update the UI on the main thread
+                Dispatcher.Invoke(() =>
+                {
+                    var messageTag = new MessageTag(newMessage);
+                    messageTags.Children.Add(messageTag);
+                });
+            });
+        }
+
+        private void btn_Send_Clicked(object sender, RoutedEventArgs e)
+        {
+            string messageContent = TypingArea.Text;
+
+            if (!string.IsNullOrEmpty(messageContent))
+            {
+                var newMessage = new MessageModel
+                {
+                    message_id = _conversationDao.CountMessages() + 1,
+                    message = messageContent,
+                    sender_id = _currUser,
+                    conversation_id = _currConversationId,
+                    send_At = DateTime.Now,
+                };
+
+                _conversationDao.InsertNewMessage(newMessage);
+
+                TypingArea.Text = string.Empty;
+
+                var messageTag = new MessageTag(newMessage);
+                messageTags.Children.Add(messageTag);
+            }
 
         }
     }

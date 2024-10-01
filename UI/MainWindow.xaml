@@ -124,10 +124,10 @@
                             </Grid.ColumnDefinitions>
 
                             <Border Grid.Column="0" Height="24" Width="auto" Background="#c0c0c0" CornerRadius="8" VerticalAlignment="Center" Margin="10,0">
-                                <TextBox Background="Transparent" BorderThickness="0" VerticalAlignment="Center" Margin="5,0" FontSize="16" Foreground="White"/>
+                                <TextBox x:Name="TypingArea" Background="Transparent" BorderThickness="0" VerticalAlignment="Center" Margin="5,0" FontSize="16" Foreground="White"/>
                             </Border>
 
-                            <Button Grid.Column="1" Height="24" Width="24" VerticalAlignment="Center" HorizontalAlignment="Center" Background="Transparent" BorderThickness="0">
+                            <Button Grid.Column="1" Height="24" Width="24" VerticalAlignment="Center" HorizontalAlignment="Center" Background="Transparent" BorderThickness="0" Click="btn_Send_Clicked">
                                 <Image Source="../Resources/Images/send.png"/>
                             </Button>
                         </Grid>
