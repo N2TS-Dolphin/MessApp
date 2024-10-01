@@ -36,9 +36,9 @@ namespace MessApp.DB.Dao
         /// </summary>
         /// <param name="uid">UID</param>
         /// <returns>Info Account</returns>
-        public AccountModel GetAccountByUID(string uid)
+        public AccountModel GetAccountByUID(int uid)
         {
-            return _accountCollection.Find(uid).FirstOrDefault();
+            return _accountCollection.Find(account => account.user_id == uid).FirstOrDefault();
         }
 
         /// <summary>

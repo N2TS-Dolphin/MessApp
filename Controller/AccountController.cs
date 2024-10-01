@@ -28,7 +28,7 @@ namespace MessApp.Controller
         /// </summary>
         /// <param name="uid">uid of this Account</param>
         /// <returns></returns>
-        public AccountModel GetInfoAccount(string uid)
+        public AccountModel GetInfoAccount(int uid)
         {
             return _accountDao.GetAccountByUID(uid);
         }

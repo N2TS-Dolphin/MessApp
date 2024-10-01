@@ -14,11 +14,13 @@ namespace MessApp.DB.Dao
     {
         private readonly IMongoCollection<ConversationModel> _conversationCollection;
         private readonly IMongoCollection<ParticipantModel> _participantCollection;
+        private readonly IMongoCollection<MessageModel> _messageCollection;
 
         public ConversationDao(MongoDBClient client)
         {
             _conversationCollection = client.GetDatabase().GetCollection<ConversationModel>("conversations");
             _participantCollection = client.GetDatabase().GetCollection<ParticipantModel>("participants");
+            _messageCollection = client.GetDatabase().GetCollection<MessageModel>("messages");
         }
 
         /// <summary>
@@ -37,6 +39,19 @@ namespace MessApp.DB.Dao
             }
 
             return conversations;
+        }
+
+        /// <summary>
+        /// Get All Messages in Conversation via CID
+        /// </summary>
+        /// <param name="conversation_id">Conversation ID</param>
+        /// <returns>All Messages in Conversation</returns>
+        public List<MessageModel> GetAllMessagesByCID(int conversation_id)
+        {
+            var sortDefinition = Builders<MessageModel>.Sort.Ascending(m => m.send_At);
+            List<MessageModel> messages = _messageCollection.Find(message => message.conversation_id == conversation_id).Sort(sortDefinition).ToList();
+
+            return messages;
         }
     }
 }

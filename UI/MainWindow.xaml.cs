@@ -45,8 +45,31 @@ namespace MessApp.UI
             foreach (ConversationModel conversation in conversations)
             {
                 var friendTag = new FriendTag(conversation);
+                friendTag.OnFriendTagClick += OnFriendTagClicked;
                 friendTags.Children.Add(friendTag);
             }    
+        }
+
+        public void LoadMessages()
+        {
+            
+        }
+
+        /// <summary>
+        /// Get Message in Chosen Conversation
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="conversation"></param>
+        private void OnFriendTagClicked (object sender, ConversationModel conversation)
+        {
+            List<MessageModel> messages = _conversationDao.GetAllMessagesByCID(conversation.conversation_id);
+            Username.Text = conversation.name;
+            messageTags.Children.Clear();
+            foreach (MessageModel message in messages)
+            {
+                var messageTag = new MessageTag(message);
+                messageTags.Children.Add(messageTag);
+            }
         }
 
         private void btn_FriendReq_Click(object sender, RoutedEventArgs e)

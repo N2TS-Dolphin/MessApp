@@ -23,7 +23,7 @@ namespace MessApp.UC
     public partial class FriendTag : UserControl
     {
         public ConversationModel Conversation {  get; private set; }
-        public event EventHandler<ConversationModel> OnFriendTagClicked;
+        public event EventHandler<ConversationModel> OnFriendTagClick;
         public FriendTag(ConversationModel conversation)
         {
             InitializeComponent();
@@ -33,7 +33,7 @@ namespace MessApp.UC
 
         private void FriendTag_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            OnFriendTagClicked?.Invoke(this, Conversation);
+            OnFriendTagClick?.Invoke(this, Conversation);
         }
     }
 }

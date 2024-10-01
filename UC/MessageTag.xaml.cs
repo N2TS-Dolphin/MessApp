@@ -13,6 +13,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using MessApp.DB.Dao;
+using MessApp.DB.Model;
+using MessApp.DB;
+using MessApp.Config;
+
 namespace MessApp.UC
 {
     /// <summary>
@@ -20,9 +25,15 @@ namespace MessApp.UC
     /// </summary>
     public partial class MessageTag : UserControl
     {
-        public MessageTag()
+        public MessageModel Message {  get; private set; }
+        private readonly AccountDao _accountDao;
+        public MessageTag(MessageModel message)
         {
             InitializeComponent();
+            _accountDao = new AccountDao(new MongoDBClient(new DBConfig()));
+            Message = message;
+            SenderName.Text = _accountDao.GetAccountByUID(message.sender_id).firstName + " " + _accountDao.GetAccountByUID(message.sender_id).lastName;
+            MessageContent.Text = message.message;
         }
     }
 }
