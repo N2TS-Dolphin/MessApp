@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.34916.146
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessApp", "MessApp.csproj", "{4F079CBB-38BD-4CA8-BCC0-BBB28CD469DA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MessApp", "MessApp.csproj", "{4F079CBB-38BD-4CA8-BCC0-BBB28CD469DA}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MessAppSetup", "..\MessAppSetup\MessAppSetup.vdproj", "{860D5978-F61A-476A-A857-AF24DEE7B938}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,8 @@ Global
 		{4F079CBB-38BD-4CA8-BCC0-BBB28CD469DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F079CBB-38BD-4CA8-BCC0-BBB28CD469DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F079CBB-38BD-4CA8-BCC0-BBB28CD469DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{860D5978-F61A-476A-A857-AF24DEE7B938}.Debug|Any CPU.ActiveCfg = Debug
+		{860D5978-F61A-476A-A857-AF24DEE7B938}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

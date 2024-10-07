@@ -13,13 +13,28 @@ using MessApp.Config;
 
 namespace MessApp.Controller
 {
-    internal class AuthenticateController
+    public class AuthenticateController
     {
         private readonly MongoDBClient _client;
 
         public AuthenticateController(MongoDBClient client)
         {
             _client = client;
+        }
+
+        /// <summary>
+        /// Hàm băm mật khẩu
+        /// </summary>
+        /// <param name="password">Mật khẩu</param>
+        /// <returns>Mật khẩu đã băm</returns>
+        private string HashPassword(string password)
+        {
+            using (var sha256 = SHA256.Create())
+            {
+                var bytes = Encoding.UTF8.GetBytes(password);
+                var hash = sha256.ComputeHash(bytes);
+                return Convert.ToBase64String(hash);
+            }
         }
 
         /// <summary>
@@ -31,32 +46,21 @@ namespace MessApp.Controller
         /// <param name="lastName">họ và tên đệm</param>
         /// <param name="phone">số điện thoại</param>
         /// <param name="birthDate">ngày sinh</param>
-        public void SignUp(string username, string password, string phone, string firstName, string lastName, DateTime birthDate)
+        public async Task SignUp(string username, string password, string phone, string firstName, string lastName, DateTime birthDate)
         {
             // Khởi tạo Dao
             AccountDao accountDao = new AccountDao(_client);
-            // Đọc danh sách tài khoản trong db
-            List<AccountModel> accounts = accountDao.GetAllAccounts();
-            
+
             // Xử lý mã hóa mật khẩu
-            var passwordInBytes = Encoding.UTF8.GetBytes(password);
-            var entropy = new byte[32];
+            var hashedPassword = HashPassword(password);
 
-            using(var rng = RandomNumberGenerator.Create())
-            {
-                rng.GetBytes(entropy);
-            }
-
-            var cypherText = ProtectedData.Protect(passwordInBytes, entropy, DataProtectionScope.CurrentUser);
-
-            int uid = accounts.Count() + 1;
+            int uid = (await accountDao.GetAllAccounts()).Count() + 1;
 
             AccountModel newAccount = new AccountModel
             {
                 user_id = uid,
                 username = username,
-                password = Convert.ToBase64String(cypherText),
-                entropy = Convert.ToBase64String(entropy),
+                password = hashedPassword,
                 firstName = firstName,
                 lastName = lastName,
                 phone = phone,
@@ -64,36 +68,36 @@ namespace MessApp.Controller
                 registerDate = DateTime.UtcNow
             };
 
-            accountDao.InsertNewAccount(newAccount);
+            await accountDao.InsertNewAccount(newAccount);
         }
 
-        public bool LogIn(string username, string password)
+        /// <summary>
+        /// Xử lý so sánh thông tin tài khoản
+        /// </summary>
+        /// <param name="username">Tên người dùng</param>
+        /// <param name="password">Mật khẩu</param>
+        /// <returns></returns>
+        public async Task<bool> LogIn(string username, string password)
         {
             // Khởi tạo Dao
             AccountDao accountDao = new AccountDao(_client);
             // Đọc danh sách tài khoản từ db
-            List<AccountModel> accounts = accountDao.GetAllAccounts();
+            var accounts = await accountDao.GetAllAccounts();
 
-            int index = accounts.FindIndex(x => x.username == username);
-
-            if(index != -1)
+            var account = accounts.Find(x => x.username == username);
+            
+            if(account != null)
             {
-                var passwordInBytes = Convert.FromBase64String(accounts[index].password);
-                var entropy = Convert.FromBase64String(accounts[index].entropy);
-                var decryptedPassword = ProtectedData.Unprotect(passwordInBytes, entropy, DataProtectionScope.CurrentUser);
+                var hashedPassword = account.password;
+                var enteredHashedPassword = HashPassword(password);
 
-                var accountPassword = Encoding.UTF8.GetString(decryptedPassword);
-                if(accountPassword == password)
+                if (hashedPassword == enteredHashedPassword)
                 {
-                    LoginState.Instance.Set(accounts[index].user_id);
+                    LoginState.Instance.Set(account.user_id);
                     return true;
                 }
-                else
-                    return false;
-
             }
-            else
-                return false;
+            return false; 
         }
     }
 }

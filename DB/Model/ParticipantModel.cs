@@ -22,6 +22,9 @@ namespace MessApp.DB.Model
         [BsonElement("uid")]
         public int user_id { get; set; }
 
+        [BsonElement("chatname")]
+        public string chatname { get; set; }
+
         [BsonElement("join_At")]
         public DateTime joinDate { get; set; }
 

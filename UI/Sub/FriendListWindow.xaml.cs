@@ -12,14 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace MessApp.UI
+namespace MessApp.UI.Sub
 {
     /// <summary>
-    /// Interaction logic for CallWindow.xaml
+    /// Interaction logic for FriendListWindow.xaml
     /// </summary>
-    public partial class CallWindow : Window
+    public partial class FriendListWindow : Window
     {
-        public CallWindow()
+        public FriendListWindow()
         {
             InitializeComponent();
         }

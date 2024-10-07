@@ -27,14 +27,13 @@ namespace MessApp.UC
         public event Action OnLogInSuccess;
         public event Action OnSignUpSwitch;
         public event Action OnForgotPasswordSwitch;
-        private readonly MongoDBClient _client;
         private AuthenticateController _authenticatorController;
 
         public LogInForm()
         {
             InitializeComponent();
-            _client = new MongoDBClient(new DBConfig());
-            _authenticatorController = new AuthenticateController(_client);
+
+            _authenticatorController = new AuthenticateController(new MongoDBClient(new DBConfig()));
         }
 
         private void username_TextChanged(object sender, TextChangedEventArgs e)
@@ -47,9 +46,9 @@ namespace MessApp.UC
             passwordHint.Visibility = string.IsNullOrEmpty(password.Password) ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void btn_Login_Click(object sender, RoutedEventArgs e)
+        private async void btn_Login_Click(object sender, RoutedEventArgs e)
         {
-            LogInAction();
+            await LogInAction();
         }
 
         private void btn_SignUpSwitch_Click(object sender, RoutedEventArgs e)
@@ -62,12 +61,27 @@ namespace MessApp.UC
             OnForgotPasswordSwitch?.Invoke();
         }
 
-        public void LogInAction()
+        public async Task LogInAction()
         {
-            if (_authenticatorController.LogIn(username.Text, password.Password))
-                OnLogInSuccess?.Invoke();
-            else
-                MessageBox.Show("Incorrect Username or Password");
+            try
+            {
+                if (string.IsNullOrEmpty(username.Text) || string.IsNullOrEmpty(password.Password))
+                {
+                    MessageBox.Show("Please enter both username and password.");
+                    return;
+                }
+
+                bool isSuccess = await _authenticatorController.LogIn(username.Text, password.Password);
+
+                if (isSuccess)
+                    OnLogInSuccess?.Invoke();
+                else
+                    MessageBox.Show("Incorrect Username or Password");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occured: {ex.Message}");
+            }
         }
     }
 }

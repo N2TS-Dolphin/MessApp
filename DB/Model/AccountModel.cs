@@ -25,9 +25,6 @@ namespace MessApp.DB.Model
         [BsonElement("password")]
         public string password { get; set; }
 
-        [BsonElement("entropy")]
-        public string entropy { get; set; }
-
         [BsonElement("firstName")]
         public string firstName { get; set; }
 

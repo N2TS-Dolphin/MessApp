@@ -24,11 +24,11 @@ namespace MessApp.UC
     {
         public ConversationModel Conversation {  get; private set; }
         public event EventHandler<ConversationModel> OnFriendTagClick;
-        public FriendTag(ConversationModel conversation)
+        public FriendTag(ConversationModel conversation, ParticipantModel participant)
         {
             InitializeComponent();
             Conversation = conversation;
-            FriendName.Text = conversation.name;
+            FriendName.Text = participant.chatname;
         }
 
         private void FriendTag_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

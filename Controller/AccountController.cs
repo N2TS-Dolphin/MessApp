@@ -11,16 +11,18 @@ using MessApp.DB;
 
 namespace MessApp.Controller
 {
-    internal class AccountController
+    public class AccountController
     {
-        private readonly AccountDao _accountDao;
         private readonly MongoDBClient _client;
+        private readonly AccountDao _accountDao;
+        private readonly RelationshipDao _relationshipDao;
 
         // Constructor
         public AccountController() 
         {
             _client = new MongoDBClient(new DBConfig());
             _accountDao = new AccountDao(_client);
+            _relationshipDao = new RelationshipDao(_client);
         }
         
         /// <summary>
@@ -28,11 +30,16 @@ namespace MessApp.Controller
         /// </summary>
         /// <param name="uid">uid of this Account</param>
         /// <returns></returns>
-        public AccountModel GetInfoAccount(int uid)
+        public async Task<AccountModel> GetInfoAccount(int uid)
         {
-            return _accountDao.GetAccountByUID(uid);
+            return await _accountDao.GetAccountByUID(uid);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="uid"></param>
+        /// <returns></returns>
         public List<AccountModel> GetAllFriendAccount(string uid)
         {
             List<AccountModel> result = new List<AccountModel>();

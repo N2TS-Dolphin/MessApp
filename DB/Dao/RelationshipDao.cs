@@ -23,9 +23,9 @@ namespace MessApp.DB.Dao
         /// </summary>
         /// <param name="uid">User ID</param>
         /// <returns>All Friends of Account</returns>
-        public List<RelationshipModel> GetRelationships(int uid)
+        public async Task<List<RelationshipModel>> GetRelationships(int uid)
         {
-            return _relationshipCollection.Find(relationship => relationship.user_id == uid).ToList();
+            return await _relationshipCollection.Find(relationship => relationship.user_id == uid).ToListAsync();
         }
 
         /// <summary>
@@ -33,9 +33,9 @@ namespace MessApp.DB.Dao
         /// </summary>
         /// <param name="uid">User ID</param>
         /// <returns>All Friend Requests of Account</returns>
-        public List<RelationshipModel> GetFriendRequests(int uid)
+        public async Task<List<RelationshipModel>> GetFriendRequests(int uid)
         {
-            return _relationshipCollection.Find(relationship => relationship.friend_id == uid && relationship.status == "Pending").ToList();
+            return await _relationshipCollection.Find(relationship => relationship.friend_id == uid && relationship.status == "Pending").ToListAsync();
         }
     }
 }

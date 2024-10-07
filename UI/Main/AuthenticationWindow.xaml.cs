@@ -1,5 +1,4 @@
-﻿using MessApp.UC;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,16 +12,28 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace MessApp.UI
+using MessApp.Controller;
+using MessApp.UC;
+using MessApp.DB;
+using MessApp.Config;
+
+namespace MessApp.UI.Main
 {
     /// <summary>
     /// Interaction logic for AuthenticationWindow.xaml
     /// </summary>
     public partial class AuthenticationWindow : Window
     {
+        private readonly MongoDBClient _client;
+        private readonly AuthenticateController _authenticateController;
+
         public AuthenticationWindow()
         {
             InitializeComponent();
+
+            _client = new MongoDBClient(new DBConfig());
+
+            logInForm = (LogInForm)FindName("logInForm") ;
 
             logInForm.OnLogInSuccess += HandleLogInSuccess;
             logInForm.OnForgotPasswordSwitch += HandleForgotPasswordSwitch;
@@ -30,7 +41,7 @@ namespace MessApp.UI
 
             signUpForm.OnRegisterSuccess += HandleLogInSwitch;
             signUpForm.OnLogInSwitch += HandleLogInSwitch;
-            
+
         }
 
         public void HandleLogInSwitch()
@@ -41,7 +52,10 @@ namespace MessApp.UI
 
         public void HandleLogInSuccess()
         {
-            MainWindow mainWindow = new MainWindow();
+            MessageBox.Show("HandleLogInSuccess Triggered!"); // Thêm log này để kiểm tra
+            int user_id = LoginState.Instance.Get();
+
+            MainWindow mainWindow = new MainWindow(user_id);
             mainWindow.Show();
             this.Close();
         }
@@ -75,6 +89,37 @@ namespace MessApp.UI
                     signUpForm.SignUpAction();
                 }
             }
+        }
+
+        private void btn_Minimize_Click(object sender, RoutedEventArgs e)
+        {
+            this.WindowState = WindowState.Minimized;
+        }
+
+        private void btn_Resize_Click(object sender, RoutedEventArgs e)
+        {
+            BitmapImage bitmap = new BitmapImage();
+            bitmap.BeginInit();
+
+            if (this.WindowState == WindowState.Maximized)
+            {
+                this.WindowState = WindowState.Normal;
+                bitmap.UriSource = new Uri("pack://application:,,,/MessApp;component/Resources/Images/maximize.png");
+                img_Resize.Source = bitmap;
+            }
+            else
+            {
+                this.WindowState = WindowState.Maximized;
+                bitmap.UriSource = new Uri("pack://application:,,,/MessApp;component/Resources/Images/shrink.png");
+                img_Resize.Source = bitmap;
+            }
+
+            bitmap.EndInit();
+        }
+
+        private void btn_Close_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

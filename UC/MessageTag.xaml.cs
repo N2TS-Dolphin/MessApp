@@ -27,13 +27,30 @@ namespace MessApp.UC
     {
         public MessageModel Message {  get; private set; }
         private readonly AccountDao _accountDao;
-        public MessageTag(MessageModel message)
+        public MessageTag(MessageModel message, AccountDao accountDao)
         {
             InitializeComponent();
-            _accountDao = new AccountDao(new MongoDBClient(new DBConfig()));
+            _accountDao = accountDao;
             Message = message;
-            SenderName.Text = _accountDao.GetAccountByUID(message.sender_id).firstName;
-            MessageContent.Text = message.message;
+
+            LoadMessage();
+        }
+
+        private async void LoadMessage()
+        {
+            var senderAccount = await Task.Run(() => _accountDao.GetAccountByUID(Message.sender_id));
+
+            // Cập nhật giao diện sau khi có kết quả
+            if (senderAccount != null)
+            {
+                SenderName.Text = senderAccount.firstName;
+                MessageContent.Text = Message.message;
+            }
+            else
+            {
+                SenderName.Text = "Unknown Sender";
+                MessageContent.Text = Message.message;
+            }
         }
     }
 }
