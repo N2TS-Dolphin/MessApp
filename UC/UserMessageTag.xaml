@@ -1,0 +1,15 @@
+﻿<UserControl x:Class="MessApp.UC.UserMessageTag"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:MessApp.UC"
+             mc:Ignorable="d" 
+             d:Height="auto" d:Width="auto"
+             d:MaxWidth="350">
+    <StackPanel MinWidth="50" MaxWidth="350" HorizontalAlignment="Right">
+        <Border BorderThickness="1" Background="#c0c0c0" CornerRadius="8" Height="Auto" VerticalAlignment="Center">
+            <TextBlock x:Name="MessageContent" Height="Auto" FontSize="16" Foreground="White" Text="Hello World!!" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="10,5" TextWrapping="Wrap"/>
+        </Border>
+    </StackPanel>
+</UserControl>

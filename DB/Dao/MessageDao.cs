@@ -19,6 +19,8 @@ namespace MessApp.DB.Dao
             _messageCollection = client.GetDatabase().GetCollection<MessageModel>("messages");
         }
 
+        // GET
+
         public async Task<List<MessageModel>> GetAllMessagesByCID(int conversation_id)
         {
             var sortDefinition = Builders<MessageModel>.Sort.Ascending(m => m.send_At);
@@ -26,24 +28,36 @@ namespace MessApp.DB.Dao
             return await _messageCollection.Find(message => message.conversation_id == conversation_id).Sort(sortDefinition).ToListAsync();
         }
 
+        // ADD
+
+        /// <summary>
+        /// Add new message
+        /// </summary>
+        /// <param name="newMessage">new message</param>
+        /// <returns></returns>
         public async Task AddMessage(MessageModel newMessage)
         {
             await _messageCollection.InsertOneAsync(newMessage);
         }
 
+        // DELETE
+
+
+
+        // MORE
         public async Task<long> CountMessages()
         {
             return await _messageCollection.CountDocumentsAsync(message => true);
         }
 
         /// <summary>
-        /// 
+        /// Start a message stream to detect data changes in database messages
         /// </summary>
         /// <param name="conversation_id"></param>
         /// <param name="onMessageReceived"></param>
         public void StartMessageStream(int conversation_id, Action<MessageModel> onMessageReceived)
         {
-            // Define the pipeline for change stream (you can filter based on conversation_id
+            // Define the pipeline for change stream (you can filter based on conversation_id)
             var pipeline = new EmptyPipelineDefinition<ChangeStreamDocument<MessageModel>>()
                 .Match(change => change.FullDocument.conversation_id == conversation_id);
 

@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <None Remove="Resources\Fonts\CalignaRegular.otf" />
-    <None Remove="Resources\Images\add-friend.png" />
+    <None Remove="Resources\Images\accept.png" />
     <None Remove="Resources\Images\cake.png" />
     <None Remove="Resources\Images\call.png" />
     <None Remove="Resources\Images\close.png" />
@@ -23,6 +23,7 @@
     <None Remove="Resources\Images\logout.png" />
     <None Remove="Resources\Images\maximize.png" />
     <None Remove="Resources\Images\minimize.png" />
+    <None Remove="Resources\Images\reject.png" />
     <None Remove="Resources\Images\search.png" />
     <None Remove="Resources\Images\send.png" />
     <None Remove="Resources\Images\setting.png" />
@@ -39,7 +40,7 @@
     <Resource Include="Resources\Fonts\CalignaRegular.otf">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
-    <Resource Include="Resources\Images\add-friend.png" />
+    <Resource Include="Resources\Images\accept.png" />
     <Resource Include="Resources\Images\cake.png" />
     <Resource Include="Resources\Images\call.png" />
     <Resource Include="Resources\Images\close.png" />
@@ -52,6 +53,7 @@
     <Resource Include="Resources\Images\logout.png" />
     <Resource Include="Resources\Images\maximize.png" />
     <Resource Include="Resources\Images\minimize.png" />
+    <Resource Include="Resources\Images\reject.png" />
     <Resource Include="Resources\Images\search.png" />
     <Resource Include="Resources\Images\send.png" />
     <Resource Include="Resources\Images\setting.png" />

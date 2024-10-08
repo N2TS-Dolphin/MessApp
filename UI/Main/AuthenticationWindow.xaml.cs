@@ -52,7 +52,6 @@ namespace MessApp.UI.Main
 
         public void HandleLogInSuccess()
         {
-            MessageBox.Show("HandleLogInSuccess Triggered!"); // Thêm log này để kiểm tra
             int user_id = LoginState.Instance.Get();
 
             MainWindow mainWindow = new MainWindow(user_id);

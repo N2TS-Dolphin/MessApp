@@ -15,14 +15,14 @@ namespace MessApp.Controller
     {
         private readonly MongoDBClient _client;
         private readonly AccountDao _accountDao;
-        private readonly RelationshipDao _relationshipDao;
+        private readonly FriendController _friendController;
 
         // Constructor
         public AccountController() 
         {
             _client = new MongoDBClient(new DBConfig());
             _accountDao = new AccountDao(_client);
-            _relationshipDao = new RelationshipDao(_client);
+            _friendController = new FriendController();
         }
         
         /// <summary>
@@ -30,9 +30,9 @@ namespace MessApp.Controller
         /// </summary>
         /// <param name="uid">uid of this Account</param>
         /// <returns></returns>
-        public async Task<AccountModel> GetInfoAccount(int uid)
+        public async Task<AccountModel> GetInfoAccount(int user_id)
         {
-            return await _accountDao.GetAccountByUID(uid);
+            return await _accountDao.GetAccountByUID(user_id);
         }
 
         /// <summary>
@@ -40,11 +40,15 @@ namespace MessApp.Controller
         /// </summary>
         /// <param name="uid"></param>
         /// <returns></returns>
-        public List<AccountModel> GetAllFriendAccount(string uid)
+        public async Task<List<AccountModel>> GetAllFriendRequest(int user_id)
         {
             List<AccountModel> result = new List<AccountModel>();
+            var friend_ids = await _friendController.GetIDFriendRequestList(user_id);
 
-
+            foreach (var friend in friend_ids)
+            {
+                result.Add(await _accountDao.GetAccountByUID(friend));
+            }
 
             return result;
         }

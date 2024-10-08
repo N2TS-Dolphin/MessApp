@@ -10,6 +10,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 
 using MessApp.Config;
+using MessApp.Controller;
 using MessApp.DB;
 using MessApp.DB.Dao;
 using MessApp.DB.Model;
@@ -32,6 +33,8 @@ namespace MessApp.UI.Main
         private readonly MessageDao _messageDao;
         private readonly AccountDao _accountDao;
 
+        private readonly AccountController _accountController;
+
         private IDisposable _currMessageStream;
 
         public MainWindow(int user_id)
@@ -46,15 +49,30 @@ namespace MessApp.UI.Main
             _messageDao = new MessageDao(_dbClient);
             _accountDao = new AccountDao(_dbClient);
 
+            _accountController = new AccountController();
+
+            TypingArea.IsEnabled = false;
+
             LoadConversation();
         }
 
-        private void btn_Call_Clicked(object sender, RoutedEventArgs e)
+        private async void LoadFriendList(int user_id)
         {
-            CallWindow callWindow = new CallWindow();
-            callWindow.Show();
+            var friend_list = await _accountController.GetAllFriendRequest(user_id);
+
+            foreach (var friend in friend_list)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    var friendRequestTag = new FriendRequestTag(friend);
+                    Tags.Children.Add(friendRequestTag);
+                });
+            }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
         private async void LoadConversation()
         {
             List<ConversationModel>conversations = await Task.Run(() => _conversationDao.GetAllConversationsByUID(_currUser));
@@ -65,9 +83,9 @@ namespace MessApp.UI.Main
 
                 Dispatcher.Invoke(() =>
                 {
-                    var friendTag = new FriendTag(conversation, participant);
-                    friendTag.OnFriendTagClick += OnFriendTagClicked;
-                    friendTags.Children.Add(friendTag);
+                    var conversationTag = new ConversationTag(conversation, participant);
+                    conversationTag.OnConversationTagClick += OnFriendTagClicked;
+                    Tags.Children.Add(conversationTag);
                 });
             }    
         }
@@ -78,67 +96,55 @@ namespace MessApp.UI.Main
         /// <param name="conversation"></param>
         private async void LoadMessages(ConversationModel conversation)
         {
-            List<MessageModel> messages = await Task.Run(() => _messageDao.GetAllMessagesByCID(conversation.conversation_id));
+            var messages = await Task.Run(() => _messageDao.GetAllMessagesByCID(conversation.conversation_id));
 
             foreach (MessageModel message in messages)
             {
-                var messageTag = new MessageTag(message, _accountDao);
-                messageTags.Children.Add(messageTag);
+                if(message.sender_id == _currUser)
+                {
+                    var userMessageTag = new UserMessageTag(message);
+                    messageTags.Children.Add(userMessageTag);
+                }
+                else
+                {
+                    var friendMessageTag = new FriendMessageTag(message, _accountDao);
+                    messageTags.Children.Add(friendMessageTag);
+                }
             }
         }
 
         /// <summary>
-        /// Get Message in Chosen Conversation
+        /// 
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="conversation"></param>
-        private void OnFriendTagClicked (object sender, ConversationModel conversation)
+        private async void OnFriendTagClicked (object sender, ConversationModel conversation)
         {
-            Username.Text = conversation.name;
+            // Lấy thông tin người tham gia cuộc trò chuyện
+            var temp = await Task.Run(() => _participantDao.GetParticipant(_currUser, conversation.conversation_id));
+
+            if (conversation.name == null) // Nếu người dùng đã rename cuộc trò chuyện sẽ hiển thị tên đã được thay đổi
+                Username.Text = conversation.name;
+            else // Nếu người dùng chưa thay đổi tên cuộc trò chuyện sẽ hiển thị tên người trò chuyện với người dùng
+                Username.Text = temp.chatname;
+
+            // Xóa hết UI cuộc trò chuyện trc khi chuyển qua cuộc trò chuyện khác
             messageTags.Children.Clear();
+            // Sau khi chọn cuộc trò chuyện TypingArea mới cho phép nhập
             TypingArea.IsEnabled = true;
 
+            // Lưu trữ id cuộc trò chuyện mới được chọn
             _currConversationId = conversation.conversation_id;
 
-            // Dừng stream cuộc hội thoại
+            // Dừng stream cuộc trò chuyện cũ
             _currMessageStream?.Dispose();
 
+            // Load cuộc trò chuyện mới
             LoadMessages(conversation);
+            // Bắt đầu stream cuộc trò chuyện mới
             StartRealTimeUpdates(conversation);
         }
-
-        private void btn_FriendReq_Clicked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void btn_Send_Clicked(object sender, RoutedEventArgs e)
-        {
-            SendAction();
-        }
-
-        private void btn_Setting_Clicked(object sender, RoutedEventArgs e)
-        {
-            SettingWindow settingWindow = new SettingWindow();
-            settingWindow.ShowDialog();
-            if(LoginState.Instance.Get()==0)
-            {
-                this.Close();
-            }
-        }
-
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Enter)
-            {
-                if (TypingArea.IsFocused)
-                    SendAction();
-                else if (SearchConversation.IsFocused)
-                    SearchAction();
-            }
-        }
-
-
+        
         /// <summary>
         /// Start Real Time Update Conversation
         /// </summary>
@@ -150,12 +156,23 @@ namespace MessApp.UI.Main
                 // Update the UI on the main thread
                 Dispatcher.Invoke(() =>
                 {
-                    var messageTag = new MessageTag(newMessage, _accountDao);
-                    messageTags.Children.Add(messageTag);
+                    if (newMessage.sender_id == _currUser)
+                    {
+                        var userMessageTag = new UserMessageTag(newMessage);
+                        messageTags.Children.Add(userMessageTag);
+                    }
+                    else
+                    {
+                        var friendMessageTag = new FriendMessageTag(newMessage, _accountDao);
+                        messageTags.Children.Add(friendMessageTag);
+                    }
                 });
             });
         }
 
+        /// <summary>
+        /// Handle Send Action
+        /// </summary>
         private async void SendAction()
         {
             string messageContent = TypingArea.Text;
@@ -179,9 +196,46 @@ namespace MessApp.UI.Main
             }
         }
 
+        /// <summary>
+        /// Handle Search Action
+        /// </summary>
         private void SearchAction()
         {
             // Do Nothing
+        }
+
+        private void btn_Call_Clicked(object sender, RoutedEventArgs e)
+        {
+            CallWindow callWindow = new CallWindow();
+            callWindow.Show();
+        }
+        
+        private void btn_Conversation_Clicked(object sender, RoutedEventArgs e)
+        {
+            TypingArea.IsEnabled = false;
+            LoadConversation();
+        }
+
+        private void btn_Friend_Clicked(object sender, RoutedEventArgs e)
+        {
+            TypingArea.IsEnabled = false;
+            Tags.Children.Clear();
+            LoadFriendList(_currUser);
+        }
+
+        private void btn_Setting_Clicked(object sender, RoutedEventArgs e)
+        {
+            TypingArea.IsEnabled = false;
+
+            SettingWindow settingWindow = new SettingWindow();
+            settingWindow.ShowDialog();
+            if (LoginState.Instance.Get() == 0)
+                this.Close();
+        }
+
+        private void btn_Send_Clicked(object sender, RoutedEventArgs e)
+        {
+            SendAction();
         }
 
         private void btn_Minimize_Click(object sender, RoutedEventArgs e)
@@ -215,5 +269,15 @@ namespace MessApp.UI.Main
             this.Close();
         }
 
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (TypingArea.IsFocused)
+                    SendAction();
+                else if (SearchConversation.IsFocused)
+                    SearchAction();
+            }
+        }
     }
 }

@@ -23,11 +23,11 @@ namespace MessApp.UC
     /// <summary>
     /// Interaction logic for MessageTag.xaml
     /// </summary>
-    public partial class MessageTag : UserControl
+    public partial class FriendMessageTag : UserControl
     {
         public MessageModel Message {  get; private set; }
         private readonly AccountDao _accountDao;
-        public MessageTag(MessageModel message, AccountDao accountDao)
+        public FriendMessageTag(MessageModel message, AccountDao accountDao)
         {
             InitializeComponent();
             _accountDao = accountDao;

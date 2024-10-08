@@ -20,20 +20,20 @@ namespace MessApp.UC
     /// <summary>
     /// Interaction logic for FriendTag.xaml
     /// </summary>
-    public partial class FriendTag : UserControl
+    public partial class ConversationTag : UserControl
     {
         public ConversationModel Conversation {  get; private set; }
-        public event EventHandler<ConversationModel> OnFriendTagClick;
-        public FriendTag(ConversationModel conversation, ParticipantModel participant)
+        public event EventHandler<ConversationModel> OnConversationTagClick;
+        public ConversationTag(ConversationModel conversation, ParticipantModel participant)
         {
             InitializeComponent();
             Conversation = conversation;
-            FriendName.Text = participant.chatname;
+            ConversationName.Text = participant.chatname;
         }
 
-        private void FriendTag_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void ConversationTag_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            OnFriendTagClick?.Invoke(this, Conversation);
+            OnConversationTagClick?.Invoke(this, Conversation);
         }
     }
 }

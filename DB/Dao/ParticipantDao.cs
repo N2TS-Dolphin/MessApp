@@ -18,6 +18,8 @@ namespace MessApp.DB.Dao
             _participantCollection = client.GetDatabase().GetCollection<ParticipantModel>("participants");
         }
 
+        // GET
+
         public async Task<ParticipantModel> GetParticipant(int user_id, int conversation_id)
         {
             return await _participantCollection.Find(participant => participant.conversation_id == conversation_id && participant.user_id == user_id).FirstOrDefaultAsync();
@@ -32,5 +34,11 @@ namespace MessApp.DB.Dao
         {
             return await _participantCollection.Find(participant => participant.user_id == user_id).ToListAsync();
         }
+
+        // ADD
+
+
+
+        // DELETE
     }
 }

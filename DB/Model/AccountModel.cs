@@ -40,6 +40,9 @@ namespace MessApp.DB.Model
         [BsonElement("registerDate")]
         public DateTime registerDate { get; set; }
 
+        [BsonElement("gender")]
+        public bool isFemale { get; set; }
+
         public event PropertyChangedEventHandler? PropertyChanged;
     }
 }
