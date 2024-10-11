@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Linq;
 using System.Text;
@@ -37,6 +38,18 @@ namespace MessApp.DB.Dao
 
             var filter = Builders<ConversationModel>.Filter.In(c => c.conversation_id, conversationIds);
             return await _conversationCollection.Find(filter).ToListAsync();
+        }
+
+        public async Task<long> CountConversation()
+        {
+            return await _conversationCollection.CountDocumentsAsync(conversation => true);
+        }
+
+        public async Task<int> InsertNewConversation(ConversationModel conversation)
+        {
+            await _conversationCollection.InsertOneAsync(conversation);
+
+            return conversation.conversation_id;
         }
     }
 }

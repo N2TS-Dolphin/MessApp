@@ -44,9 +44,9 @@ namespace MessApp.UC
             phone.Text = _account.phone;
         }
 
-        private void btn_Accept_Clicked(object sender, RoutedEventArgs e)
+        private async void btn_Accept_Clicked(object sender, RoutedEventArgs e)
         {
-            
+            await _friendController.AcceptFriendRequest(_account.user_id, LoginState.Instance.Get());
         }
 
         private async void btn_Reject_Clicked(object sender, RoutedEventArgs e)

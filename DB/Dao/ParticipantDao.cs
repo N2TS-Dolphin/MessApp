@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using MessApp.Controller;
 using MessApp.DB.Model;
 using MongoDB.Driver;
 
@@ -12,10 +12,12 @@ namespace MessApp.DB.Dao
     public class ParticipantDao
     {
         private readonly IMongoCollection<ParticipantModel> _participantCollection;
+        private readonly AccountDao _accountDao;
 
         public ParticipantDao(MongoDBClient client)
         {
             _participantCollection = client.GetDatabase().GetCollection<ParticipantModel>("participants");
+            _accountDao = new AccountDao(client);
         }
 
         // GET
@@ -36,7 +38,10 @@ namespace MessApp.DB.Dao
         }
 
         // ADD
-
+        public async void InsertNewParticipant(ParticipantModel participant)
+        {
+            await _participantCollection.InsertOneAsync(participant);
+        }
 
 
         // DELETE

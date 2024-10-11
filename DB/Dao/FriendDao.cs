@@ -33,12 +33,41 @@ namespace MessApp.DB.Dao
             return await _friendCollection.Find(friend => friend.friend_id == user_id && friend.status == "Pending").ToListAsync();
         }
 
+        /// <summary>
+        /// UpdateStatusOfFriendRequest
+        /// </summary>
+        /// <param name="friend"></param>
+        public async void UpdateFriendStatus(FriendModel friend)
+        {
+            var filter = Builders<FriendModel>.Filter.Where(f => f.user_id == friend.user_id && f.friend_id == friend.friend_id);
+            var update = Builders<FriendModel>.Update.Set(f => f.status, "Accepted");
+
+            await _friendCollection.UpdateOneAsync(filter, update);
+        }
+
+        public async void CreateFriendStatus(int user_id, int friend_id)
+        {
+            var newFriend = new FriendModel
+            { 
+                user_id = user_id, 
+                friend_id = friend_id, 
+                status = "Accepted" 
+            };
+
+            await _friendCollection.InsertOneAsync(newFriend);
+        }
+
         public async Task DeleteFriendRequest (FriendModel friend)
         {
             await _friendCollection.DeleteOneAsync(f => f.user_id == friend.user_id && f.friend_id == friend.friend_id && f.status == friend.status);
         }
 
         public void StartFriendStream(int user_id, Action<FriendModel> onFriendResponse)
+        {
+
+        }
+
+        public void StopFriendStream()
         {
 
         }

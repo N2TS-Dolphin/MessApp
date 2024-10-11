@@ -53,13 +53,13 @@ namespace MessApp.UI.Main
 
             TypingArea.IsEnabled = false;
 
-            LoadConversation();
+            LoadConversationList();
         }
 
         /// <summary>
         /// 
         /// </summary>
-        private async void LoadConversation()
+        private async void LoadConversationList()
         {
             List<ConversationModel>conversations = await Task.Run(() => _conversationDao.GetAllConversationsByUID(_currUser));
 
@@ -76,7 +76,13 @@ namespace MessApp.UI.Main
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        private async void LoadPeopleList()
+        {
 
+        }
 
         /// <summary>
         /// 
@@ -138,6 +144,7 @@ namespace MessApp.UI.Main
             messageTags.Children.Clear();
             // Sau khi chọn cuộc trò chuyện TypingArea mới cho phép nhập
             TypingArea.IsEnabled = true;
+            btn_Call.Visibility = Visibility.Visible;
 
             // Lưu trữ id cuộc trò chuyện mới được chọn
             _currConversationId = conversation.conversation_id;
@@ -221,15 +228,23 @@ namespace MessApp.UI.Main
             TypingArea.IsEnabled = false;
             PageTitle.Text = "Conversation";
             btn_CreateConversation.Visibility = Visibility.Visible;
+            btn_Call.Visibility = Visibility.Hidden;
 
             Tags.Children.Clear();
+            messageTags.Children.Clear();
 
-            LoadConversation();
+            LoadConversationList();
         }
 
         private void btn_FindPeople_Clicked(object sender, RoutedEventArgs e)
         {
+            TypingArea.IsEnabled = false;
+            PageTitle.Text = "Find People";
+            btn_CreateConversation.Visibility = Visibility.Hidden;
+            btn_Call.Visibility = Visibility.Hidden;
 
+            Tags.Children.Clear();
+            messageTags.Children.Clear();
         }
 
         private void btn_FriendRequest_Clicked(object sender, RoutedEventArgs e)
@@ -237,6 +252,7 @@ namespace MessApp.UI.Main
             TypingArea.IsEnabled = false;
             PageTitle.Text = "Friend Request";
             btn_CreateConversation.Visibility = Visibility.Hidden;
+            btn_Call.Visibility = Visibility.Hidden;
 
             Tags.Children.Clear();
             messageTags.Children.Clear();

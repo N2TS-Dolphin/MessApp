@@ -167,9 +167,9 @@
 
             <Grid Grid.Row="1" VerticalAlignment="Center">
                 <!--More Feature-->
-                <TextBlock x:Name="Username" FontSize="20px" FontWeight="Bold" Margin="10, 0, 0, 0" Width="200px" HorizontalAlignment="Left"/>
+                <TextBlock x:Name="Username" FontSize="20px" FontWeight="Bold" Margin="10, 0, 0, 0" Width="300px" HorizontalAlignment="Left"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 0, 10, 0">
-                    <Button x:Name="btn_Call" Background="Transparent" BorderThickness="0" Height="24px" Width="24px" Click="btn_Call_Clicked">
+                    <Button x:Name="btn_Call" Background="Transparent" BorderThickness="0" Height="24px" Width="24px" Visibility="Hidden" Click="btn_Call_Clicked">
                         <Image Source="../../Resources/Images/call.png"/>
                     </Button>
                 </StackPanel>

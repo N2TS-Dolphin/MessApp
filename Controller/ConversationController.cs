@@ -21,5 +21,21 @@ namespace MessApp.Controller
         }
 
         // TODO
+        public async Task<int> CreateNewConversation(int created_id)
+        {
+            var conversationId = (int)await _conversationDao.CountConversation() + 1;
+
+            var newConversation = new ConversationModel
+            {
+                conversation_id = conversationId,
+                createDate = DateTime.Now,
+                name = "",
+                user_id = created_id
+            };
+
+            int conversation_id = await _conversationDao.InsertNewConversation(newConversation);
+
+            return conversation_id;
+        }
     }
 }
