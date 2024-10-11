@@ -11,12 +11,13 @@
   <ItemGroup>
     <None Remove="Resources\Fonts\CalignaRegular.otf" />
     <None Remove="Resources\Images\accept.png" />
+    <None Remove="Resources\Images\add-friend.png" />
     <None Remove="Resources\Images\cake.png" />
     <None Remove="Resources\Images\call.png" />
     <None Remove="Resources\Images\close.png" />
     <None Remove="Resources\Images\conversation.png" />
     <None Remove="Resources\Images\create.png" />
-    <None Remove="Resources\Images\group.png" />
+    <None Remove="Resources\Images\find-people.png" />
     <None Remove="Resources\Images\key.png" />
     <None Remove="Resources\Images\logo.png" />
     <None Remove="Resources\Images\logo3D.png" />
@@ -41,12 +42,13 @@
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
     <Resource Include="Resources\Images\accept.png" />
+    <Resource Include="Resources\Images\add-friend.png" />
     <Resource Include="Resources\Images\cake.png" />
     <Resource Include="Resources\Images\call.png" />
     <Resource Include="Resources\Images\close.png" />
     <Resource Include="Resources\Images\conversation.png" />
     <Resource Include="Resources\Images\create.png" />
-    <Resource Include="Resources\Images\group.png" />
+    <Resource Include="Resources\Images\find-people.png" />
     <Resource Include="Resources\Images\key.png" />
     <Resource Include="Resources\Images\logo.png" />
     <Resource Include="Resources\Images\logo3D.png" />

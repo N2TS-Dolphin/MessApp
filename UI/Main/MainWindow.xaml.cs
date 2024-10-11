@@ -56,20 +56,6 @@ namespace MessApp.UI.Main
             LoadConversation();
         }
 
-        private async void LoadFriendList(int user_id)
-        {
-            var friend_list = await _accountController.GetAllFriendRequest(user_id);
-
-            foreach (var friend in friend_list)
-            {
-                Dispatcher.Invoke(() =>
-                {
-                    var friendRequestTag = new FriendRequestTag(friend);
-                    Tags.Children.Add(friendRequestTag);
-                });
-            }
-        }
-
         /// <summary>
         /// 
         /// </summary>
@@ -87,7 +73,27 @@ namespace MessApp.UI.Main
                     conversationTag.OnConversationTagClick += OnFriendTagClicked;
                     Tags.Children.Add(conversationTag);
                 });
-            }    
+            }
+        }
+
+
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="user_id"></param>
+        private async void LoadFriendRequestList(int user_id)
+        {
+            var friend_list = await _accountController.GetAllFriendRequest(user_id);
+
+            foreach (var friend in friend_list)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    var friendRequestTag = new FriendRequestTag(friend);
+                    Tags.Children.Add(friendRequestTag);
+                });
+            }
         }
 
         /// <summary>
@@ -213,14 +219,29 @@ namespace MessApp.UI.Main
         private void btn_Conversation_Clicked(object sender, RoutedEventArgs e)
         {
             TypingArea.IsEnabled = false;
+            PageTitle.Text = "Conversation";
+            btn_CreateConversation.Visibility = Visibility.Visible;
+
+            Tags.Children.Clear();
+
             LoadConversation();
         }
 
-        private void btn_Friend_Clicked(object sender, RoutedEventArgs e)
+        private void btn_FindPeople_Clicked(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btn_FriendRequest_Clicked(object sender, RoutedEventArgs e)
         {
             TypingArea.IsEnabled = false;
+            PageTitle.Text = "Friend Request";
+            btn_CreateConversation.Visibility = Visibility.Hidden;
+
             Tags.Children.Clear();
-            LoadFriendList(_currUser);
+            messageTags.Children.Clear();
+
+            LoadFriendRequestList(_currUser);
         }
 
         private void btn_Setting_Clicked(object sender, RoutedEventArgs e)
@@ -279,5 +300,6 @@ namespace MessApp.UI.Main
                     SearchAction();
             }
         }
+
     }
 }

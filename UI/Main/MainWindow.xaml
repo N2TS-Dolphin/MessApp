@@ -62,10 +62,15 @@
                         <Button x:Name="btn_Conversation" Style="{StaticResource ModifyButton}" Click="btn_Conversation_Clicked">
                             <Image Source="../../Resources/Images/conversation.png" Height="24"/>
                         </Button>
-
-                        <!--Friend Feature-->
-                        <Button x:Name="btn_Friend" Style="{StaticResource ModifyButton}" Click="btn_Friend_Clicked">
-                            <Image Source="../../Resources/Images/group.png" Height="24"/>
+                        
+                        <!--Search People-->
+                        <Button x:Name="btn_FindPeople" Style="{StaticResource ModifyButton}" Click="btn_FindPeople_Clicked">
+                            <Image Source="../../Resources/Images/find-people.png" Height="24"/>
+                        </Button>
+                        
+                        <!--Friend Request Feature-->
+                        <Button x:Name="btn_FriendRequest" Style="{StaticResource ModifyButton}" Click="btn_FriendRequest_Clicked">
+                            <Image Source="../../Resources/Images/add-friend.png" Height="24"/>
                         </Button>
                     </StackPanel>
 
@@ -89,10 +94,10 @@
                     <Grid>
                         <StackPanel Margin="0, 15, 0, 10">
                             <Grid>
-                                <TextBlock Text="Chat" FontSize="24px" FontWeight="Bold" VerticalAlignment="Bottom" HorizontalAlignment="Left" Margin="12, 0, 0, 10"/>
+                                <TextBlock x:Name="PageTitle" Text="Conversation" FontSize="20px" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Left" Margin="12, 0, 0, 10"/>
 
                                 <!--Create New Chat-->
-                                <Button Background="Transparent" BorderThickness="0" Height="32px" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0, 0, 12, 10">
+                                <Button x:Name="btn_CreateConversation" Background="Transparent" BorderThickness="0" Height="32px" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="0, 0, 12, 10">
                                     <Image Source="../../Resources/Images/create.png"/>
                                 </Button>
                             </Grid>
@@ -162,7 +167,7 @@
 
             <Grid Grid.Row="1" VerticalAlignment="Center">
                 <!--More Feature-->
-                <TextBlock x:Name="Username" Text="Username" FontSize="20px" FontWeight="Bold" Margin="10, 0, 0, 0" Width="200px" HorizontalAlignment="Left"/>
+                <TextBlock x:Name="Username" FontSize="20px" FontWeight="Bold" Margin="10, 0, 0, 0" Width="200px" HorizontalAlignment="Left"/>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0, 0, 10, 0">
                     <Button x:Name="btn_Call" Background="Transparent" BorderThickness="0" Height="24px" Width="24px" Click="btn_Call_Clicked">
                         <Image Source="../../Resources/Images/call.png"/>

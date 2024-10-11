@@ -14,7 +14,7 @@
                 <Grid Height="30" Margin="10,0,10,0">
                     <Image Source="../Resources/Images/user.png" Width="24px" Height="24px" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                     <Grid Width="250" Height="24px" VerticalAlignment="Center" HorizontalAlignment="Right">
-                        <TextBlock x:Name="usernameHint" Text="Enter username" Foreground="Gray" FontSize="16"/>
+                        <TextBlock x:Name="usernameHint" Text="Enter username" Foreground="Gray" FontSize="16" Margin="1,0,0,0"/>
                         <TextBox x:Name="username" BorderThickness="0" Background="Transparent" FontSize="16px" TextChanged="username_TextChanged"/>
                     </Grid>
                 </Grid>
@@ -25,7 +25,7 @@
                 <Grid Height="30" Margin="10,0,10,0">
                     <Image Source="../Resources/Images/key.png" Width="24px" Height="24px" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                     <Grid Width="250" Height="24px" VerticalAlignment="Center" HorizontalAlignment="Right">
-                        <TextBlock x:Name="passwordHint" Text="Enter password" Foreground="Gray" FontSize="16"/>
+                        <TextBlock x:Name="passwordHint" Text="Enter password" Foreground="Gray" FontSize="16" Margin="1,0,0,0"/>
                         <PasswordBox x:Name="password" BorderThickness="0" Background="Transparent" FontSize="16px" PasswordChanged="password_PasswordChanged"/>
                     </Grid>
                 </Grid>

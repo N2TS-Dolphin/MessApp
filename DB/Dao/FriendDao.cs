@@ -37,5 +37,10 @@ namespace MessApp.DB.Dao
         {
             await _friendCollection.DeleteOneAsync(f => f.user_id == friend.user_id && f.friend_id == friend.friend_id && f.status == friend.status);
         }
+
+        public void StartFriendStream(int user_id, Action<FriendModel> onFriendResponse)
+        {
+
+        }
     }
 }
