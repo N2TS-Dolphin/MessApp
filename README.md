@@ -1,4 +1,5 @@
 # MessApp
+_This app is based on Meta's Messenger_
 
 ## Feature in version 1.0:
 - Log In, Log Out
