@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.Security.AccessControl;
+using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -32,6 +34,7 @@ namespace MessApp.UI.Main
         private readonly ParticipantDao _participantDao;
         private readonly MessageDao _messageDao;
         private readonly AccountDao _accountDao;
+        private readonly FriendDao _friendDao;
 
         private readonly AccountController _accountController;
 
@@ -44,6 +47,7 @@ namespace MessApp.UI.Main
             _currUser = user_id;
 
             _dbClient = new MongoDBClient(new DBConfig());
+
             _conversationDao = new ConversationDao(_dbClient);
             _participantDao = new ParticipantDao(_dbClient);
             _messageDao = new MessageDao(_dbClient);
@@ -79,9 +83,25 @@ namespace MessApp.UI.Main
         /// <summary>
         /// 
         /// </summary>
-        private async void LoadPeopleList()
+        private async void LoadPeopleList(string keyword)
         {
+            Tags.Children.Clear();
 
+            var result = await _accountDao.GetAccountByPhone(keyword);
+
+            if(result == null || result.user_id == _currUser)
+            {
+                var emptyTag = new TextBlock();
+                emptyTag.Text = "Không có ai ở đây";
+                emptyTag.VerticalAlignment = VerticalAlignment.Center;
+                emptyTag.HorizontalAlignment = HorizontalAlignment.Center;
+                Tags.Children.Add(emptyTag);
+            }
+            else
+            {
+                var peopleTag = new PeopleTag(_currUser, result);
+                Tags.Children.Add(peopleTag);
+            }
         }
 
         /// <summary>
@@ -97,6 +117,13 @@ namespace MessApp.UI.Main
                 Dispatcher.Invoke(() =>
                 {
                     var friendRequestTag = new FriendRequestTag(friend);
+
+                    friendRequestTag.onResponseRequest += () =>
+                    {
+                        Tags.Children.Clear();
+                        LoadFriendRequestList(_currUser);
+                    };
+
                     Tags.Children.Add(friendRequestTag);
                 });
             }
@@ -155,14 +182,14 @@ namespace MessApp.UI.Main
             // Load cuộc trò chuyện mới
             LoadMessages(conversation);
             // Bắt đầu stream cuộc trò chuyện mới
-            StartRealTimeUpdates(conversation);
+            StartMessageUpdates(conversation);
         }
-        
+
         /// <summary>
-        /// Start Real Time Update Conversation
+        /// Start Real Time Update Message in Conversation
         /// </summary>
         /// <param name="conversation"></param>
-        private void StartRealTimeUpdates(ConversationModel conversation)
+        private void StartMessageUpdates(ConversationModel conversation)
         {
             _messageDao.StartMessageStream(conversation.conversation_id, (MessageModel newMessage) =>
             {
@@ -212,9 +239,12 @@ namespace MessApp.UI.Main
         /// <summary>
         /// Handle Search Action
         /// </summary>
-        private void SearchAction()
+        private async void SearchPeopleAction()
         {
-            // Do Nothing
+            // TODO
+            var keyword = SearchPeople.Text;
+
+            LoadPeopleList(keyword);
         }
 
         private void btn_Call_Clicked(object sender, RoutedEventArgs e)
@@ -230,6 +260,12 @@ namespace MessApp.UI.Main
             btn_CreateConversation.Visibility = Visibility.Visible;
             btn_Call.Visibility = Visibility.Hidden;
 
+            SearchBar.Visibility = Visibility.Visible;
+            SearchPeople.Text = "";
+            SearchPeople.Visibility = Visibility.Collapsed;
+            SearchConversation.Text = "";
+            SearchConversation.Visibility = Visibility.Visible;
+
             Tags.Children.Clear();
             messageTags.Children.Clear();
 
@@ -243,6 +279,12 @@ namespace MessApp.UI.Main
             btn_CreateConversation.Visibility = Visibility.Hidden;
             btn_Call.Visibility = Visibility.Hidden;
 
+            SearchBar.Visibility = Visibility.Visible;
+            SearchPeople.Text = "";
+            SearchPeople.Visibility = Visibility.Visible;
+            SearchConversation.Text = "";
+            SearchConversation.Visibility = Visibility.Collapsed;
+
             Tags.Children.Clear();
             messageTags.Children.Clear();
         }
@@ -253,6 +295,8 @@ namespace MessApp.UI.Main
             PageTitle.Text = "Friend Request";
             btn_CreateConversation.Visibility = Visibility.Hidden;
             btn_Call.Visibility = Visibility.Hidden;
+
+            SearchBar.Visibility = Visibility.Hidden;
 
             Tags.Children.Clear();
             messageTags.Children.Clear();
@@ -312,10 +356,15 @@ namespace MessApp.UI.Main
             {
                 if (TypingArea.IsFocused)
                     SendAction();
-                else if (SearchConversation.IsFocused)
-                    SearchAction();
+                else if (SearchPeople.IsFocused)
+                    SearchPeopleAction();
             }
         }
 
+        private void SearchFriend_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
     }
 }

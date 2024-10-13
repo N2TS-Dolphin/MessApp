@@ -48,10 +48,16 @@ namespace MessApp.Controller
         {
             // Tìm mối quan hệ từ sender tới receiver sửa từ Pending thành Accept
             var sender2receiver = await _friendDao.GetFriendRequest(user_id, friend_id);
-            _friendDao.UpdateFriendStatus(sender2receiver);
+            await _friendDao.UpdateFriendStatus(sender2receiver);
 
             // Thêm mối quan hệ từ receiver tới sender với status là Accept
-            _friendDao.CreateFriendStatus(friend_id, user_id);
+            var newFriend = new FriendModel
+            {
+                user_id = friend_id,
+                friend_id = user_id,
+                status = "Accepted"
+            };
+            await _friendDao.CreateFriendStatus(newFriend);
 
             // Tạo cuộc trò chuyện mới giữa 2 người
             int conversation_id = await _conversationController.CreateNewConversation(user_id);
@@ -69,6 +75,18 @@ namespace MessApp.Controller
         {
             // Tìm mối quan hệ từ sender tới receiver để xóa
             await _friendDao.DeleteFriendRequest(await _friendDao.GetFriendRequest(user_id,friend_id));
+        }
+
+        public async Task CreateNewFriendRequest(int user_id, int friend_id)
+        {
+            FriendModel newRequest = new FriendModel
+            {
+                user_id = user_id,
+                friend_id = friend_id,
+                status = "Pending"
+            };
+
+            await _friendDao.CreateFriendRequest(newRequest);
         }
     }
 }

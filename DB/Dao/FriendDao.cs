@@ -12,6 +12,7 @@ namespace MessApp.DB.Dao
     public class FriendDao
     {
         private readonly IMongoCollection<FriendModel> _friendCollection;
+        private IChangeStreamCursor<FriendDao> _friendChangeStream;
 
         public FriendDao(MongoDBClient client)
         {
@@ -37,7 +38,7 @@ namespace MessApp.DB.Dao
         /// UpdateStatusOfFriendRequest
         /// </summary>
         /// <param name="friend"></param>
-        public async void UpdateFriendStatus(FriendModel friend)
+        public async Task UpdateFriendStatus(FriendModel friend)
         {
             var filter = Builders<FriendModel>.Filter.Where(f => f.user_id == friend.user_id && f.friend_id == friend.friend_id);
             var update = Builders<FriendModel>.Update.Set(f => f.status, "Accepted");
@@ -45,31 +46,24 @@ namespace MessApp.DB.Dao
             await _friendCollection.UpdateOneAsync(filter, update);
         }
 
-        public async void CreateFriendStatus(int user_id, int friend_id)
+        public async Task CreateFriendStatus(FriendModel newFriend)
         {
-            var newFriend = new FriendModel
-            { 
-                user_id = user_id, 
-                friend_id = friend_id, 
-                status = "Accepted" 
-            };
-
             await _friendCollection.InsertOneAsync(newFriend);
         }
 
-        public async Task DeleteFriendRequest (FriendModel friend)
+        public async Task DeleteFriendRequest(FriendModel friend)
         {
             await _friendCollection.DeleteOneAsync(f => f.user_id == friend.user_id && f.friend_id == friend.friend_id && f.status == friend.status);
         }
 
-        public void StartFriendStream(int user_id, Action<FriendModel> onFriendResponse)
+        public FriendModel GetFriend(int user_id, int friend_id)
         {
-
+            return _friendCollection.Find(friend => friend.user_id == user_id && friend.friend_id == friend_id).FirstOrDefault();
         }
 
-        public void StopFriendStream()
+        public async Task CreateFriendRequest(FriendModel friendRequest)
         {
-
+            await _friendCollection.InsertOneAsync(friendRequest);
         }
     }
 }

@@ -103,11 +103,11 @@
                             </Grid>
 
                             <!--Search Bar-->
-                            <Border BorderThickness="1px" BorderBrush="Black" CornerRadius="10" Margin="10, 0, 10, 0">
+                            <Border x:Name="SearchBar" BorderThickness="1px" BorderBrush="Black" CornerRadius="10" Margin="10, 0, 10, 0">
                                 <Grid Height="24px" Width="auto" Margin="5, 0, 5, 0">
                                     <Image Source="../../Resources/Images/search.png" Height="20px" Width="20px" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                                     <TextBox x:Name="SearchConversation" BorderThickness="0" Width="140px" VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="Visible"/>
-                                    <TextBox x:Name="SearchFriend" BorderThickness="0" Width="140px" VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="Collapsed"/>
+                                    <TextBox x:Name="SearchPeople" BorderThickness="0" Width="140px" VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="Collapsed" PreviewTextInput="SearchFriend_PreviewTextInput"/>
                                 </Grid>
                             </Border>
                         </StackPanel>

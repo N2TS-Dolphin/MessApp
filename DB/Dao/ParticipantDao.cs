@@ -38,7 +38,7 @@ namespace MessApp.DB.Dao
         }
 
         // ADD
-        public async void InsertNewParticipant(ParticipantModel participant)
+        public async Task InsertNewParticipant(ParticipantModel participant)
         {
             await _participantCollection.InsertOneAsync(participant);
         }

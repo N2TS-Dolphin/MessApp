@@ -33,8 +33,6 @@ namespace MessApp.UI.Main
 
             _client = new MongoDBClient(new DBConfig());
 
-            logInForm = (LogInForm)FindName("logInForm") ;
-
             logInForm.OnLogInSuccess += HandleLogInSuccess;
             logInForm.OnForgotPasswordSwitch += HandleForgotPasswordSwitch;
             logInForm.OnSignUpSwitch += HandleSignUpSwitch;

@@ -24,6 +24,7 @@ namespace MessApp.UC
     /// </summary>
     public partial class FriendRequestTag : UserControl
     {
+        public event Action onResponseRequest;
         private readonly AccountModel _account;
         private readonly FriendController _friendController;
 
@@ -47,11 +48,13 @@ namespace MessApp.UC
         private async void btn_Accept_Clicked(object sender, RoutedEventArgs e)
         {
             await _friendController.AcceptFriendRequest(_account.user_id, LoginState.Instance.Get());
+            onResponseRequest?.Invoke();
         }
 
         private async void btn_Reject_Clicked(object sender, RoutedEventArgs e)
         {
             await _friendController.RejectFriendRequest(_account.user_id, LoginState.Instance.Get());
+            onResponseRequest?.Invoke();
         }
     }
 }

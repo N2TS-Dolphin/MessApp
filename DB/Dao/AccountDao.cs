@@ -42,7 +42,7 @@ namespace MessApp.DB.Dao
         }
 
         /// <summary>
-        /// Get Account by Phone Number
+        /// Get Account By Phone Number
         /// </summary>
         /// <param name="phone">Phone Number</param>
         /// <returns>Info Account</returns>
@@ -51,6 +51,11 @@ namespace MessApp.DB.Dao
             return await _accountCollection.Find(account => account.phone == phone).FirstOrDefaultAsync();
         }
 
+        /// <summary>
+        /// Get All Account By Name
+        /// </summary>
+        /// <param name="name">First Name or Last Name</param>
+        /// <returns>List of Account</returns>
         public async Task<List<AccountModel>> GetAllAccountByName(string name)
         {
             var accounts = await GetAllAccounts();
