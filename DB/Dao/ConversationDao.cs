@@ -16,14 +16,12 @@ namespace MessApp.DB.Dao
         private readonly IMongoCollection<ConversationModel> _conversationCollection;
 
         private readonly ParticipantDao _participantDao;
-        private readonly MessageDao _messageDao;
 
         public ConversationDao(MongoDBClient client)
         {
             _conversationCollection = client.GetDatabase().GetCollection<ConversationModel>("conversations");
 
             _participantDao = new ParticipantDao(client);
-            _messageDao = new MessageDao(client);
         }
 
         /// <summary>

@@ -48,6 +48,8 @@ namespace MessApp.UC
 
         private async void btn_Login_Click(object sender, RoutedEventArgs e)
         {
+            btn_Login.IsEnabled = btn_ForgotPassword.IsEnabled = btn_Create.IsEnabled = false;
+
             await LogInAction();
         }
 
@@ -68,6 +70,8 @@ namespace MessApp.UC
                 if (string.IsNullOrEmpty(username.Text) || string.IsNullOrEmpty(password.Password))
                 {
                     MessageBox.Show("Please enter both username and password.");
+                    btn_Login.IsEnabled = btn_ForgotPassword.IsEnabled = btn_Create.IsEnabled = true;
+
                     return;
                 }
 
@@ -76,11 +80,15 @@ namespace MessApp.UC
                 if (isSuccess)
                     OnLogInSuccess?.Invoke();
                 else
+                {
                     MessageBox.Show("Incorrect Username or Password");
+                    btn_Login.IsEnabled = btn_ForgotPassword.IsEnabled = btn_Create.IsEnabled = true;
+                }
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"An error occured: {ex.Message}");
+                btn_Login.IsEnabled = btn_ForgotPassword.IsEnabled = btn_Create.IsEnabled = true;
             }
         }
     }

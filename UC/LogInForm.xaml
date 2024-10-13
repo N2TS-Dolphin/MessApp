@@ -58,7 +58,7 @@
             </Button>
             
             <!--Forget Password-->
-            <Button Content="Forgot Password" Height="30" FontSize="16px" Margin="0,0,0,15" Click="btn_ForgotPasswordSwitch_Click">
+            <Button x:Name="btn_ForgotPassword" Content="Forgot Password" Height="30" FontSize="16px" Margin="0,0,0,15" Click="btn_ForgotPasswordSwitch_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="Transparent" />
@@ -84,7 +84,7 @@
             </Button>
             
             <!--Create New Account-->
-            <Button Content="Create New Account" Height="30" FontSize="16px" Click="btn_SignUpSwitch_Click">
+            <Button x:Name="btn_Create" Content="Create New Account" Height="30" FontSize="16px" Click="btn_SignUpSwitch_Click">
                 <Button.Style>
                     <Style TargetType="Button">
                         <Setter Property="Background" Value="Gray"/>
