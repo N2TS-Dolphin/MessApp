@@ -7,6 +7,7 @@
         xmlns:uc="clr-namespace:MessApp.UC"
         mc:Ignorable="d"
         Title="MessApp" Height="450" Width="800"
+        MinHeight="300" MinWidth="500"
         KeyDown="Window_KeyDown"
         Icon="../../Resources/Images/logo3D.png"
         WindowStartupLocation="CenterScreen"

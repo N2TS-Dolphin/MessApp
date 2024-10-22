@@ -62,12 +62,15 @@ namespace MessApp.UC
 
         private void btn_LogInSwitch_Click(object sender, RoutedEventArgs e)
         {
+            username.Text = password.Password = phone.Text = firstName.Text = lastName.Text = birthDate.Text = "";
             OnLogInSwitch?.Invoke();
         }
 
-        public void SignUpAction()
+        public async Task SignUpAction()
         {
-            _authenticatorController.SignUp(username.Text, password.Password, phone.Text, firstName.Text, lastName.Text, birthDate.SelectedDate ?? DateTime.Today);
+            btn_Register.IsEnabled = btn_LoginSwitch.IsEnabled = false;
+
+            await _authenticatorController.SignUp(username.Text, password.Password, phone.Text, firstName.Text, lastName.Text, birthDate.SelectedDate ?? DateTime.Today);
         }
     }
 }

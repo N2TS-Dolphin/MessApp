@@ -48,23 +48,27 @@ namespace MessApp.UC
 
         private async void btn_Login_Click(object sender, RoutedEventArgs e)
         {
-            btn_Login.IsEnabled = btn_ForgotPassword.IsEnabled = btn_Create.IsEnabled = false;
-
             await LogInAction();
         }
 
         private void btn_SignUpSwitch_Click(object sender, RoutedEventArgs e)
         {
+            username.Text = password.Password = "";
+
             OnSignUpSwitch?.Invoke();
         }
 
         private void btn_ForgotPasswordSwitch_Click(object sender, RoutedEventArgs e)
         {
+            username.Text = password.Password = "";
+
             OnForgotPasswordSwitch?.Invoke();
         }
 
         public async Task LogInAction()
         {
+            btn_Login.IsEnabled = btn_ForgotPassword.IsEnabled = btn_Create.IsEnabled = false;
+
             try
             {
                 if (string.IsNullOrEmpty(username.Text) || string.IsNullOrEmpty(password.Password))
